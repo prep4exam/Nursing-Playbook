@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nursing Pharmacology Flashcards — Bonus Deck</title>
+<style>
+  :root{
+    --teal-900:#08454A;
+    --teal-700:#0B5D5D;
+    --teal-500:#0E8388;
+    --teal-300:#3FB3AE;
+    --teal-100:#D9EFEC;
+    --teal-050:#F1F9F8;
+    --ink:#16262A;
+    --muted:#5E7174;
+    --line:#C7E2DF;
+    --amber:#B8752A;
+    --paper:#FBFDFC;
+    --shadow:0 10px 30px rgba(8,69,74,.13);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 50% -140px, #12706F 0%, #0B5D5D 42%, #08454A 100%);
+    min-height:100vh;
+    padding:22px 16px 56px;
+    line-height:1.5;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  header{text-align:center;color:#fff;margin-bottom:20px}
+  .eyebrow{
+    display:inline-block;letter-spacing:.22em;text-transform:uppercase;
+    font-size:11px;font-weight:700;color:#A8DCD7;
+    border:1px solid rgba(168,220,215,.4);border-radius:999px;padding:5px 14px;margin-bottom:14px;
+  }
+  h1{font-size:clamp(24px,5.4vw,34px);line-height:1.15;font-weight:800;letter-spacing:-.02em}
+  .sub{color:#CDE9E6;font-size:14px;margin-top:8px}
+
+  /* ---------- controls ---------- */
+  .panel{
+    background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:16px;margin-bottom:16px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .chip{
+    font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+    background:#fff;color:var(--teal-700);
+    border:1px solid var(--line);border-radius:999px;padding:7px 13px;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .chip:hover{background:var(--teal-050)}
+  .chip[aria-pressed="true"]{background:var(--teal-500);color:#fff;border-color:var(--teal-500)}
+  .chip:focus-visible,button:focus-visible{outline:3px solid var(--teal-300);outline-offset:2px}
+
+  /* ---------- progress ---------- */
+  .meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+  .count{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .count b{color:var(--teal-700)}
+  .track{flex:1;height:7px;background:var(--teal-100);border-radius:999px;overflow:hidden}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--teal-500),var(--teal-300));
+    border-radius:999px;transition:width .3s ease}
+
+  /* ---------- card ---------- */
+  .stage{perspective:1400px;margin-bottom:14px}
+  .card{
+    position:relative;width:100%;min-height:290px;cursor:pointer;
+    transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.3,1);
+    border:none;background:none;padding:0;font:inherit;text-align:left;display:block;
+  }
+  .card.flipped{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:26px 24px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .front{background:var(--paper);border:1px solid var(--line)}
+  .back{background:linear-gradient(160deg,var(--teal-700),var(--teal-900));color:#fff;transform:rotateY(180deg)}
+  .tag{
+    align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--teal-100);color:var(--teal-700);border-radius:6px;padding:4px 9px;margin-bottom:16px;
+  }
+  .back .tag{background:rgba(255,255,255,.16);color:#CDE9E6}
+  .q{font-size:clamp(19px,3.6vw,23px);font-weight:700;line-height:1.35;letter-spacing:-.01em}
+  .a{font-size:clamp(17px,3.3vw,20px);font-weight:600;line-height:1.45}
+  .a em{display:block;font-style:normal;font-weight:400;font-size:14.5px;color:#B7E0DC;margin-top:12px;line-height:1.5}
+  .hint{margin-top:auto;padding-top:18px;font-size:12px;color:var(--muted)}
+  .back .hint{color:#93C7C3}
+
+  /* ---------- answer buttons ---------- */
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{
+    font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;border-radius:12px;
+    padding:13px 16px;border:1px solid transparent;transition:transform .12s,filter .15s,background .15s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-again{background:#fff;color:var(--amber);border-color:#E8C79B}
+  .btn-again:hover{background:#FFF7EC}
+  .btn-know{background:var(--teal-500);color:#fff}
+  .btn-know:hover{filter:brightness(1.07)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  .row{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  .link{
+    font:inherit;font-size:13px;font-weight:600;cursor:pointer;background:none;border:none;
+    color:#BFE6E2;text-decoration:underline;text-underline-offset:3px;padding:6px 8px;border-radius:8px;
+  }
+  .link:hover{color:#fff}
+
+  /* ---------- results ---------- */
+  .done{background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 22px;text-align:center}
+  .done h2{font-size:24px;font-weight:800;color:var(--teal-900);letter-spacing:-.02em}
+  .score{font-size:44px;font-weight:800;color:var(--teal-500);margin:14px 0 2px;font-variant-numeric:tabular-nums}
+  .score-label{font-size:13px;color:var(--muted)}
+  .done p{color:var(--muted);font-size:14.5px;margin:14px auto 0;max-width:430px}
+  .divider{height:1px;background:var(--line);margin:24px 0}
+  .cta-note{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:14px}
+  .ctas{display:grid;gap:10px;max-width:340px;margin:0 auto}
+  .cta{
+    display:block;text-align:center;text-decoration:none;font-weight:700;font-size:15px;
+    padding:14px 18px;border-radius:12px;transition:filter .15s,transform .12s;
+  }
+  .cta:active{transform:translateY(1px)}
+  .cta-buy{background:var(--teal-500);color:#fff}
+  .cta-buy:hover{filter:brightness(1.07)}
+  .cta-review{background:#fff;color:var(--amber);border:1px solid #E8C79B}
+  .cta-review:hover{background:#FFF7EC}
+  .stars{letter-spacing:2px}
+  .restart{margin-top:16px}
+  .btn-ghost{background:#fff;color:var(--teal-700);border-color:var(--line)}
+  .btn-ghost:hover{background:var(--teal-050)}
+
+  footer{text-align:center;color:#9FD2CE;font-size:11.5px;margin-top:22px;line-height:1.6}
+  .hidden{display:none!important}
+
+  /* ---------- floating buy button ---------- */
+  .float-buy{
+    position:fixed;right:18px;bottom:18px;z-index:50;
+    display:flex;align-items:center;gap:9px;
+    background:var(--teal-500);color:#fff;text-decoration:none;
+    font-size:14px;font-weight:700;letter-spacing:.01em;
+    padding:13px 18px;border-radius:999px;
+    box-shadow:0 8px 22px rgba(8,69,74,.35);
+    transition:transform .15s,filter .15s,box-shadow .15s;
+    animation:float-in .5s cubic-bezier(.2,.7,.3,1) .3s both;
+  }
+  .float-buy:hover{filter:brightness(1.08);transform:translateY(-2px);box-shadow:0 12px 26px rgba(8,69,74,.42)}
+  .float-buy:active{transform:translateY(0)}
+  .float-buy .cart{font-size:16px;line-height:1}
+  @keyframes float-in{
+    from{opacity:0;transform:translateY(14px) scale(.92)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+  @media (max-width:430px){
+    .float-buy{right:14px;bottom:14px;padding:12px 16px;font-size:13.5px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .float-buy{animation:none}
+  }
+
+  @media (max-width:430px){
+    .card{min-height:320px}
+    .actions{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .card,.fill,.btn,.cta{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Bonus Deck</span>
+    <h1>Nursing Pharmacology Flashcards</h1>
+    <p class="sub">123 high-yield cards — stems, antidotes, safety rules, numbers &amp; mnemonics</p>
+  </header>
+
+  <!-- STUDY VIEW -->
+  <section id="study">
+    <div class="panel">
+      <div class="chips" id="chips" role="group" aria-label="Choose a topic"></div>
+      <div class="meta">
+        <span class="count">Card <b id="pos">1</b> of <b id="total">123</b></span>
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <span class="count" id="knownCount">0 known</span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <button class="card" id="card" aria-live="polite">
+        <div class="face front">
+          <span class="tag" id="tagFront">Stem</span>
+          <p class="q" id="question">Loading…</p>
+          <p class="hint">Tap the card to see the answer &nbsp;·&nbsp; or press Space</p>
+        </div>
+        <div class="face back">
+          <span class="tag" id="tagBack">Answer</span>
+          <p class="a" id="answer"></p>
+          <p class="hint">Tap again to flip back</p>
+        </div>
+      </button>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-again" id="again" disabled>Review again</button>
+      <button class="btn btn-know" id="know" disabled>I knew it</button>
+    </div>
+
+    <div class="row">
+      <button class="link" id="shuffle">Shuffle deck</button>
+      <button class="link" id="skip">Skip card</button>
+      <button class="link" id="restart">Start over</button>
+    </div>
+  </section>
+
+  <!-- RESULTS VIEW -->
+  <section id="done" class="done hidden">
+    <h2 id="doneTitle">Round complete</h2>
+    <p class="score" id="finalScore">0%</p>
+    <p class="score-label" id="scoreLabel">known on the first pass</p>
+    <p id="doneMsg"></p>
+
+    <div class="row" style="margin-top:20px">
+      <button class="btn btn-know" id="reviewMissed">Review the ones you missed</button>
+      <button class="btn btn-ghost" id="studyAgain">Study the full deck again</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="cta-note">Want the full system these cards came from?</p>
+    <div class="ctas">
+      <a class="cta cta-buy" id="buyLink" href="#" target="_blank" rel="noopener">Buy the book on Amazon</a>
+      <a class="cta cta-review" id="reviewLink" href="#" target="_blank" rel="noopener">
+        <span class="stars">★★★★★</span> Leave a review
+      </a>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:14px">Reviews genuinely help other nursing students find this book.</p>
+  </section>
+
+  <footer>
+    Companion deck to <strong>Nursing Pharmacology Made Simple</strong>.<br>
+    For educational and exam-preparation use only — not a clinical or dosing reference.<br>
+    Always verify drug information against current sources and facility policy.
+  </footer>
+</div>
+
+<a class="float-buy" id="floatBuy" href="#" target="_blank" rel="noopener" aria-label="Buy the book on Amazon">
+  <span class="cart" aria-hidden="true">🛒</span>
+  <span>Buy on Amazon</span>
+</a>
+
+<script>
+/* ============================================================
+   SET YOUR LINKS HERE
+   Replace YOUR_ASIN with your book's Amazon ASIN after publishing.
+   ============================================================ */
+const BUY_URL    = "https://amzn.to/4xo8hkt";
+const REVIEW_URL = "https://www.amazon.com/review/create-review?&asin=YOUR_ASIN";
+
+const CARDS = [
+  // ---------- STEMS ----------
+  {c:"Stem", q:"-olol", a:"Beta blocker", n:"Hold for bradycardia or hypotension; never stop abruptly (rebound). Masks signs of hypoglycemia."},
+  {c:"Stem", q:"-pril", a:"ACE inhibitor", n:"Dry cough, angioedema, hyperkalemia. Contraindicated in pregnancy."},
+  {c:"Stem", q:"-sartan", a:"ARB (angiotensin II receptor blocker)", n:"Like an ACE inhibitor, but without the cough."},
+  {c:"Stem", q:"-dipine", a:"Dihydropyridine calcium channel blocker", n:"Peripheral edema and reflex tachycardia are the classic effects."},
+  {c:"Stem", q:"-statin", a:"HMG-CoA reductase inhibitor (cholesterol)", n:"Muscle pain may signal rhabdomyolysis. Monitor liver function."},
+  {c:"Stem", q:"-terol", a:"Beta-2 agonist bronchodilator", n:"Short-acting = rescue. Long-acting = maintenance, never alone in asthma."},
+  {c:"Stem", q:"-cillin", a:"Penicillin antibiotic", n:"Always assess for allergy; watch for anaphylaxis."},
+  {c:"Stem", q:"-floxacin", a:"Fluoroquinolone antibiotic", n:"Tendon rupture risk; avoid taking with dairy or antacids."},
+  {c:"Stem", q:"-cycline", a:"Tetracycline antibiotic", n:"Photosensitivity; avoid in children under 8 and in pregnancy."},
+  {c:"Stem", q:"-mycin / -micin", a:"Aminoglycoside (or related) antibiotic", n:"Nephrotoxic and ototoxic — monitor peak and trough levels."},
+  {c:"Stem", q:"-azole", a:"Antifungal", n:"Hepatotoxic; many CYP450 drug interactions."},
+  {c:"Stem", q:"-prazole", a:"Proton pump inhibitor", n:"Take before meals. Long-term use lowers B12, magnesium, and calcium."},
+  {c:"Stem", q:"-tidine", a:"H2 receptor blocker", n:"Reduces gastric acid; cimetidine has many interactions."},
+  {c:"Stem", q:"-parin", a:"Heparin or low-molecular-weight heparin", n:"Bleeding risk. With enoxaparin, do not expel the air bubble."},
+  {c:"Stem", q:"-osin", a:"Alpha-1 blocker", n:"First-dose orthostatic hypotension — rise slowly, dose at bedtime."},
+  {c:"Stem", q:"-pam / -lam", a:"Benzodiazepine", n:"CNS depression; flumazenil is the reversal agent."},
+  {c:"Stem", q:"-caine", a:"Local anesthetic", n:"Watch for CNS and cardiac toxicity if it reaches circulation."},
+  {c:"Stem", q:"-triptan", a:"Antimigraine (serotonin agonist)", n:"Causes vasoconstriction — avoid in coronary artery disease."},
+  {c:"Stem", q:"-vir", a:"Antiviral", n:"Hydrate well with acyclovir — it is nephrotoxic."},
+  {c:"Stem", q:"-mab", a:"Monoclonal antibody", n:"Infection risk; screen for TB and hepatitis B before starting."},
+  {c:"Stem", q:"-tide (semaglutide, liraglutide)", a:"GLP-1 receptor agonist", n:"GI upset and delayed gastric emptying; pancreatitis risk."},
+  {c:"Stem", q:"-flozin", a:"SGLT2 inhibitor", n:"Genitourinary infections and euglycemic DKA."},
+  {c:"Stem", q:"-sone / -olone", a:"Corticosteroid", n:"Never stop abruptly; raises glucose and masks infection."},
+  {c:"Stem", q:"-ide (furosemide, bumetanide)", a:"Loop diuretic", n:"Hypokalemia; ototoxic if pushed too fast."},
+  {c:"Stem", q:"-thiazide", a:"Thiazide diuretic", n:"Hypokalemia, hyperglycemia, hyperuricemia."},
+  {c:"Stem", q:"-tinib", a:"Tyrosine kinase inhibitor (targeted cancer therapy)", n:"Oral chemotherapy; monitor for specific organ toxicities."},
+  {c:"Stem", q:"-gliptin", a:"DPP-4 inhibitor", n:"Weight-neutral oral agent for type 2 diabetes."},
+  {c:"Stem", q:"-setron", a:"5-HT3 antiemetic (ondansetron)", n:"QT prolongation is the key concern."},
+
+  // ---------- ANTIDOTES ----------
+  {c:"Antidote", q:"Antidote for opioid overdose?", a:"Naloxone (Narcan)", n:"May wear off before the opioid does — monitor and be ready to redose."},
+  {c:"Antidote", q:"Antidote for benzodiazepine overdose?", a:"Flumazenil", n:"Use cautiously — can precipitate seizures."},
+  {c:"Antidote", q:"Antidote for acetaminophen overdose?", a:"N-acetylcysteine (Mucomyst)", n:"Most effective when given early."},
+  {c:"Antidote", q:"Antidote for warfarin?", a:"Vitamin K (phytonadione)", n:"Monitor INR; target is usually 2–3."},
+  {c:"Antidote", q:"Antidote for heparin?", a:"Protamine sulfate", n:"Heparin is monitored with aPTT."},
+  {c:"Antidote", q:"Reversal agent for dabigatran (Pradaxa)?", a:"Idarucizumab (Praxbind)", n:"Dabigatran is a direct thrombin inhibitor."},
+  {c:"Antidote", q:"Reversal agent for apixaban and rivaroxaban?", a:"Andexanet alfa (Andexxa)", n:"These are factor Xa inhibitors."},
+  {c:"Antidote", q:"Antidote for digoxin toxicity?", a:"Digoxin immune Fab (DigiFab)", n:"Low potassium worsens digoxin toxicity."},
+  {c:"Antidote", q:"Antidote for beta blocker overdose?", a:"Glucagon", n:"Bypasses the blocked beta receptor to raise heart rate."},
+  {c:"Antidote", q:"Antidote for magnesium sulfate toxicity?", a:"Calcium gluconate", n:"First sign of toxicity is loss of deep tendon reflexes."},
+  {c:"Antidote", q:"Antidote for iron overdose?", a:"Deferoxamine", n:"A chelating agent."},
+  {c:"Antidote", q:"Antidote for cholinergic crisis / organophosphates?", a:"Atropine (plus pralidoxime)", n:"Reverses the SLUDGE symptoms."},
+  {c:"Antidote", q:"Antidote for severe anticholinergic toxicity?", a:"Physostigmine", n:"For the 'hot, dry, red, blind, mad' presentation."},
+  {c:"Antidote", q:"Antidote for ethylene glycol or methanol poisoning?", a:"Fomepizole", n:"Blocks alcohol dehydrogenase."},
+  {c:"Antidote", q:"Antidote for cyanide poisoning?", a:"Hydroxocobalamin (Cyanokit)", n:"Turns urine and skin red."},
+  {c:"Antidote", q:"Rescue agent after high-dose methotrexate?", a:"Leucovorin (folinic acid)", n:"Called 'leucovorin rescue'."},
+  {c:"Antidote", q:"Agent that prevents hemorrhagic cystitis with cyclophosphamide?", a:"Mesna (plus aggressive hydration)", n:"A uroprotectant."},
+
+  // ---------- SAFETY ----------
+  {c:"Safety", q:"What does PINCH stand for?", a:"Potassium, Insulin, Narcotics, Chemo/anticoagulants, Heparin", n:"The high-alert drugs that cause serious harm when given in error."},
+  {c:"Safety", q:"Which drug must NEVER be given IV push?", a:"Concentrated potassium chloride", n:"Fatal cardiac arrest. Always dilute, infuse slowly via pump."},
+  {c:"Safety", q:"Which chemo drug is fatal if given intrathecally?", a:"Vincristine — IV use only", n:"Label it 'for IV use only — fatal if given by other routes'."},
+  {c:"Safety", q:"Which combination causes fatal hypotension?", a:"Nitrates with sildenafil or tadalafil", n:"Never give nitroglycerin within the PDE5 inhibitor's window."},
+  {c:"Safety", q:"Which two heart failure drug classes must never be combined?", a:"An ARNI (sacubitril/valsartan) with an ACE inhibitor", n:"Requires a 36-hour washout between them."},
+  {c:"Safety", q:"What are the two patient identifiers?", a:"Full name and date of birth", n:"Never use the room number as an identifier."},
+  {c:"Safety", q:"Which drugs require an independent double check?", a:"Insulin, heparin, chemotherapy, and other high-alert drugs", n:"Two nurses verify separately, not together."},
+  {c:"Safety", q:"Which drug classes must never be stopped abruptly?", a:"Beta blockers, clonidine, corticosteroids, antiseizure drugs", n:"Rebound hypertension, adrenal crisis, or status epilepticus."},
+  {c:"Safety", q:"What does LASA mean?", a:"Look-alike / sound-alike drug names", n:"Tall Man lettering (hydrOXYzine vs hydrALAzine) reduces the risk."},
+  {c:"Safety", q:"Why is a leading zero required (0.5 mg, not .5 mg)?", a:"A missed decimal point causes a tenfold overdose", n:"And never use a trailing zero — 1.0 mg can read as 10 mg."},
+  {c:"Safety", q:"When do you chart a medication?", a:"After it is given — never before", n:"Charting ahead is how double doses happen."},
+  {c:"Safety", q:"Order of inhalers: bronchodilator or steroid first?", a:"Bronchodilator first, then the steroid", n:"Opens the airway so the steroid reaches deeper. Rinse after the steroid."},
+  {c:"Safety", q:"What is a narrow therapeutic index drug?", a:"One where the toxic dose is close to the effective dose", n:"Digoxin, lithium, phenytoin, warfarin, theophylline."},
+  {c:"Safety", q:"Which drug requires checking urine output before infusing?", a:"Potassium (adequate renal function required)", n:"Poor output means potassium accumulates dangerously."},
+
+  // ---------- NUMBERS ----------
+  {c:"Numbers", q:"Therapeutic digoxin level?", a:"0.5–2.0 ng/mL", n:"Hold and reassess if the apical pulse is under 60."},
+  {c:"Numbers", q:"Therapeutic lithium level?", a:"0.6–1.2 mEq/L", n:"Dehydration and low sodium raise the level toward toxicity."},
+  {c:"Numbers", q:"Therapeutic phenytoin level?", a:"10–20 mcg/mL", n:"Watch for gingival hyperplasia and nystagmus."},
+  {c:"Numbers", q:"Target INR for most patients on warfarin?", a:"2–3", n:"Vitamin K is the reversal agent."},
+  {c:"Numbers", q:"Normal serum potassium?", a:"3.5–5.0 mEq/L", n:"Low potassium worsens digoxin toxicity."},
+  {c:"Numbers", q:"Normal serum sodium?", a:"135–145 mEq/L", n:"Correct severe hyponatremia slowly."},
+  {c:"Numbers", q:"Hold digoxin if the apical pulse is below…", a:"60 beats per minute", n:"Count for a full minute before deciding."},
+  {c:"Numbers", q:"Hold an opioid if the respiratory rate is below…", a:"12 breaths per minute", n:"Assess sedation level too."},
+  {c:"Numbers", q:"Maximum daily acetaminophen for a healthy adult?", a:"About 4 grams per day", n:"Lower with liver disease or alcohol use. Check combination products."},
+  {c:"Numbers", q:"How long to reach steady state?", a:"About 4–5 half-lives", n:"The same rule applies to clearing a drug after stopping it."},
+  {c:"Numbers", q:"Maximum duration of ketorolac therapy?", a:"5 days", n:"Longer use sharply raises GI bleeding and kidney risk."},
+  {c:"Numbers", q:"Within how long should oseltamivir be started?", a:"48 hours of symptom onset", n:"After that, benefit drops sharply."},
+  {c:"Numbers", q:"How long must a patient stay upright after alendronate?", a:"At least 30 minutes", n:"With a full glass of water, on an empty stomach."},
+  {c:"Numbers", q:"How long before a live vaccine should pregnancy be avoided?", a:"Pregnancy should be avoided for 4 weeks after", n:"Live vaccines are contraindicated during pregnancy."},
+
+  // ---------- CLASSES ----------
+  {c:"Classes", q:"Prototype beta blocker and its key check?", a:"Metoprolol — check heart rate and blood pressure", n:"Cardioselective; safer than propranolol in asthma."},
+  {c:"Classes", q:"Which insulin can be given IV?", a:"Regular insulin", n:"The only insulin safe for IV administration."},
+  {c:"Classes", q:"Which insulin is cloudy and has a peak?", a:"NPH (intermediate-acting)", n:"Long-acting glargine is clear and has no peak — never mix it."},
+  {c:"Classes", q:"When must metformin be held?", a:"Before iodinated contrast imaging", n:"Risk of lactic acidosis with acute kidney injury."},
+  {c:"Classes", q:"Which oral diabetes class causes hypoglycemia?", a:"Sulfonylureas (glipizide, glyburide, glimepiride)", n:"Metformin alone rarely causes lows."},
+  {c:"Classes", q:"How is levothyroxine taken?", a:"In the morning, on an empty stomach", n:"Separate from calcium and iron; effects take weeks."},
+  {c:"Classes", q:"Which antibiotic causes a disulfiram reaction with alcohol?", a:"Metronidazole (Flagyl)", n:"Avoid alcohol during and for days after therapy."},
+  {c:"Classes", q:"Which antibiotic turns body fluids orange?", a:"Rifampin", n:"Expected and harmless — but it stains contact lenses."},
+  {c:"Classes", q:"Which TB drug causes optic neuritis?", a:"Ethambutol", n:"Report any change in vision or color perception."},
+  {c:"Classes", q:"Which TB drug requires vitamin B6?", a:"Isoniazid (INH)", n:"Pyridoxine prevents peripheral neuropathy."},
+  {c:"Classes", q:"What happens if vancomycin is infused too fast?", a:"Flushing reaction of the face, neck, and torso", n:"Slow the infusion; it is a rate reaction, not a true allergy."},
+  {c:"Classes", q:"Which antibiotic class carries the highest C. difficile risk?", a:"Clindamycin", n:"Report new, persistent diarrhea immediately."},
+  {c:"Classes", q:"Key teaching for a patient taking an ACE inhibitor?", a:"Report a persistent dry cough and any facial swelling", n:"Angioedema is a medical emergency."},
+  {c:"Classes", q:"What must be avoided with an MAOI?", a:"Tyramine-containing foods", n:"Aged cheese, cured meats, red wine — risk of hypertensive crisis."},
+  {c:"Classes", q:"Which antipsychotic requires ANC monitoring?", a:"Clozapine", n:"Risk of agranulocytosis; report fever or sore throat."},
+  {c:"Classes", q:"How long until an SSRI reaches full effect?", a:"2–4 weeks (up to 6)", n:"Monitor for increased suicidality early in treatment."},
+  {c:"Classes", q:"Which antidepressant lowers the seizure threshold?", a:"Bupropion (Wellbutrin)", n:"Avoid in seizure and eating disorders."},
+  {c:"Classes", q:"Which asthma drug carries a neuropsychiatric boxed warning?", a:"Montelukast (Singulair)", n:"Added in 2020 — monitor for mood and behavior changes."},
+  {c:"Classes", q:"Why rinse the mouth after an inhaled corticosteroid?", a:"To prevent oral thrush (candidiasis)", n:"It is a controller, not a rescue inhaler."},
+  {c:"Classes", q:"Key nursing point for spironolactone?", a:"It is potassium-sparing — watch for hyperkalemia", n:"Avoid potassium supplements and salt substitutes."},
+  {c:"Classes", q:"Which drug requires holding calcium in neonates?", a:"Ceftriaxone (Rocephin)", n:"Risk of fatal precipitates."},
+  {c:"Classes", q:"Expected side effect of nitroglycerin?", a:"Headache", n:"Also hypotension and dizziness — sit or lie down when taking it."},
+  {c:"Classes", q:"What does amiodarone damage long-term?", a:"Lungs, thyroid, and liver", n:"Baseline and ongoing pulmonary, thyroid, and liver monitoring."},
+  {c:"Classes", q:"What happens when adenosine is given?", a:"A brief period of asystole before rhythm converts", n:"Warn the patient; give rapid IV push with a fast flush."},
+  {c:"Classes", q:"Which anticoagulant is monitored with aPTT?", a:"Heparin", n:"Warfarin is monitored with INR/PT."},
+  {c:"Classes", q:"Teaching for a patient on warfarin and leafy greens?", a:"Keep vitamin K intake consistent — not zero", n:"Sudden changes swing the INR."},
+  {c:"Classes", q:"How is oral iron best absorbed?", a:"With vitamin C, on an empty stomach if tolerated", n:"Expect dark stools; use a straw for liquid forms."},
+  {c:"Classes", q:"Doxorubicin's signature toxicity?", a:"Cardiotoxicity", n:"Also turns urine red and is a vesicant."},
+  {c:"Classes", q:"What is tamoxifen's major risk?", a:"Blood clots and endometrial cancer", n:"Report leg pain or abnormal vaginal bleeding."},
+  {c:"Classes", q:"Before starting a TNF inhibitor, screen for…", a:"Tuberculosis and hepatitis B", n:"These drugs reactivate latent infection."},
+  {c:"Classes", q:"Which fluid is the only one given with blood products?", a:"0.9% sodium chloride (normal saline)", n:"Dextrose causes hemolysis; LR's calcium can clot."},
+  {c:"Classes", q:"Which IV fluid should be avoided in increased ICP?", a:"Hypotonic fluids such as 0.45% sodium chloride", n:"They shift fluid into cells and worsen cerebral edema."},
+  {c:"Classes", q:"Which herb induces CYP450 and lowers drug levels?", a:"St. John's wort", n:"Weakens contraceptives, warfarin, antiretrovirals, and more."},
+  {c:"Classes", q:"Which supplements increase bleeding risk?", a:"Ginkgo, garlic, ginseng, fish oil, vitamin E", n:"Ask before surgery or with anticoagulants."},
+  {c:"Classes", q:"Who cannot receive live vaccines?", a:"Pregnant and immunocompromised patients", n:"MMR, varicella, live influenza, rotavirus."},
+  {c:"Classes", q:"Which vaccine is recommended in every pregnancy?", a:"Tdap", n:"Protects the newborn from pertussis."},
+
+  // ---------- POPULATIONS ----------
+  {c:"Populations", q:"Why are older adults more sensitive to medications?", a:"Reduced kidney and liver clearance, less body water, more fat", n:"'Start low, go slow.' The Beers Criteria lists drugs to avoid."},
+  {c:"Populations", q:"How are pediatric doses usually calculated?", a:"By body weight (mg/kg) — sometimes body surface area", n:"Always verify the calculated dose against a safe range."},
+  {c:"Populations", q:"Which analgesic is cautioned in children with viral illness?", a:"Aspirin — risk of Reye's syndrome", n:"Use acetaminophen or ibuprofen instead."},
+  {c:"Populations", q:"Which drug classes are contraindicated in pregnancy?", a:"ACE inhibitors, ARBs, warfarin, isotretinoin, tetracyclines", n:"Letter categories were replaced by the PLLR narrative labeling."},
+  {c:"Populations", q:"Preferred antihypertensives in pregnancy?", a:"Labetalol and methyldopa", n:"Never an ACE inhibitor or ARB."},
+  {c:"Populations", q:"What does renal impairment change about dosing?", a:"Renally cleared drugs need dose reduction or longer intervals", n:"Watch metformin, gabapentin, aminoglycosides, and enoxaparin."},
+
+  // ---------- MNEMONICS ----------
+  {c:"Mnemonics", q:"RIPE — the four TB drugs?", a:"Rifampin, Isoniazid, Pyrazinamide, Ethambutol", n:"Isoniazid → Neuropathy (B6). Ethambutol → Eyes."},
+  {c:"Mnemonics", q:"SLUDGE — what does it signal?", a:"Cholinergic excess: Salivation, Lacrimation, Urination, Defecation, GI distress, Emesis", n:"Reversed with atropine."},
+  {c:"Mnemonics", q:"'Hot, dry, red, blind, mad, full' describes…", a:"Anticholinergic toxicity", n:"Hot as a hare, dry as a bone, red as a beet, blind as a bat, mad as a hatter, full as a flask."},
+  {c:"Mnemonics", q:"Three domains of digoxin toxicity?", a:"GI upset, visual halos (yellow-green), and bradycardia", n:"Low potassium makes toxicity worse."},
+  {c:"Mnemonics", q:"Serotonin syndrome vs NMS — the distinguishing sign?", a:"Serotonin syndrome has hyperreflexia and clonus; NMS has lead-pipe rigidity", n:"Serotonin syndrome comes on in hours; NMS develops more slowly."},
+  {c:"Mnemonics", q:"Signs of magnesium toxicity, in order?", a:"Loss of deep tendon reflexes, then respiratory depression, then cardiac arrest", n:"Calcium gluconate is the antidote."},
+  {c:"Mnemonics", q:"Which electrolyte imbalance mimics digoxin toxicity risk?", a:"Hypokalemia", n:"Especially in patients also taking a loop diuretic."},
+  {c:"Mnemonics", q:"On the NCLEX, what is usually the 'first' action with a medication?", a:"Verify — the patient, the order, allergies, or a key assessment", n:"Assess before you administer."}
+];
+
+/* ---------------- state ---------------- */
+const $ = id => document.getElementById(id);
+let deck = [], idx = 0, flipped = false, missed = [], knownCount = 0, answered = false, roundIsReview = false;
+
+const cats = ["All", ...[...new Set(CARDS.map(c => c.c))]];
+let activeCat = "All";
+
+/* ---------------- setup ---------------- */
+$("buyLink").href = BUY_URL;
+$("reviewLink").href = REVIEW_URL;
+$("floatBuy").href = BUY_URL;
+
+cats.forEach(cat => {
+  const b = document.createElement("button");
+  b.className = "chip";
+  b.textContent = cat === "All" ? `All (${CARDS.length})` : `${cat} (${CARDS.filter(c=>c.c===cat).length})`;
+  b.setAttribute("aria-pressed", cat === activeCat);
+  b.onclick = () => { activeCat = cat; syncChips(); buildDeck(); };
+  b.dataset.cat = cat;
+  $("chips").appendChild(b);
+});
+function syncChips(){
+  [...$("chips").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.cat === activeCat));
+}
+
+function shuffle(a){
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildDeck(){
+  const pool = activeCat === "All" ? CARDS.slice() : CARDS.filter(c => c.c === activeCat);
+  deck = shuffle(pool.slice());
+  idx = 0; missed = []; knownCount = 0; roundIsReview = false;
+  $("done").classList.add("hidden");
+  $("study").classList.remove("hidden");
+  render();
+}
+
+function render(){
+  const card = deck[idx];
+  if (!card){ finish(); return; }
+  flipped = false; answered = false;
+  $("card").classList.remove("flipped");
+  $("tagFront").textContent = card.c;
+  $("question").textContent = card.q;
+  $("answer").innerHTML = card.a + (card.n ? `<em>${card.n}</em>` : "");
+  $("pos").textContent = idx + 1;
+  $("total").textContent = deck.length;
+  $("knownCount").textContent = `${knownCount} known`;
+  $("fill").style.width = (idx / deck.length * 100) + "%";
+  $("again").disabled = true;
+  $("know").disabled = true;
+}
+
+function flip(){
+  flipped = !flipped;
+  $("card").classList.toggle("flipped", flipped);
+  if (flipped && !answered){ $("again").disabled = false; $("know").disabled = false; }
+}
+
+function answer(knew){
+  if (answered) return;
+  answered = true;
+  if (knew) knownCount++; else missed.push(deck[idx]);
+  next();
+}
+
+function next(){
+  idx++;
+  if (idx >= deck.length) finish(); else render();
+}
+
+function finish(){
+  const total = deck.length;
+  const pct = total ? Math.round(knownCount / total * 100) : 0;
+  $("study").classList.add("hidden");
+  $("done").classList.remove("hidden");
+  $("doneTitle").textContent = roundIsReview ? "Review round complete" : "Deck complete";
+  $("finalScore").textContent = pct + "%";
+  $("scoreLabel").textContent = `${knownCount} of ${total} known`;
+  $("doneMsg").textContent =
+    missed.length === 0 ? "Perfect round — every card marked known. Try another topic or shuffle the full deck." :
+    pct >= 80 ? `Strong round. ${missed.length} card${missed.length>1?"s":""} to tighten up before your exam.` :
+    pct >= 50 ? `Solid start. Run the ${missed.length} missed cards again — that repetition is what makes them stick.` :
+                `These are the hard ones. Review the ${missed.length} you missed, then come back to the full deck.`;
+  $("reviewMissed").disabled = missed.length === 0;
+  $("reviewMissed").textContent = missed.length
+    ? `Review the ${missed.length} you missed` : "Nothing to review";
+}
+
+/* ---------------- events ---------------- */
+$("card").onclick = flip;
+$("again").onclick = () => answer(false);
+$("know").onclick  = () => answer(true);
+$("skip").onclick  = () => { if (!answered){ answered = true; missed.push(deck[idx]); } next(); };
+$("shuffle").onclick = () => { deck = shuffle(deck); idx = 0; missed = []; knownCount = 0; render(); };
+$("restart").onclick = buildDeck;
+$("studyAgain").onclick = buildDeck;
+$("reviewMissed").onclick = () => {
+  if (!missed.length) return;
+  deck = shuffle(missed.slice());
+  idx = 0; missed = []; knownCount = 0; roundIsReview = true;
+  $("done").classList.add("hidden");
+  $("study").classList.remove("hidden");
+  render();
+};
+
+document.addEventListener("keydown", e => {
+  if ($("study").classList.contains("hidden")) return;
+  if (e.code === "Space" || e.code === "Enter"){ e.preventDefault(); flip(); }
+  else if (e.key === "ArrowRight" && !$("know").disabled) answer(true);
+  else if (e.key === "ArrowLeft" && !$("again").disabled) answer(false);
+});
+
+buildDeck();
+</script>
+</body>
+</html>
